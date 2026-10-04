@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    url: ${DB_URL}/synapsemcp_test
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    hikari:
+      connection-timeout: ${DB_CONNECTION_TIMEOUT:3000}
+      connection-init-sql: SET lock_timeout = '${DB_LOCK_TIMEOUT:5s}'; SET hnsw.iterative_scan = relaxed_order
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    defer-datasource-initialization: true
+    open-in-view: false
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      connect-timeout: ${REDIS_CONNECT_TIMEOUT:5s}
+      timeout: ${REDIS_TIMEOUT:5s}
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:migration/schema.sql
+
+synapsemcp:
+  redis:
+    key-prefix: synapsemcp_test

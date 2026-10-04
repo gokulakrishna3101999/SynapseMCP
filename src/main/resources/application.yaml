@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: synapse_mcp
+  profiles:
+    default: ${ENVIRONMENT:local}
+  ai:
+    mcp:
+      server:
+        name: synapse_mcp
+        version: 0.0.1-SNAPSHOT
+        protocol: STREAMABLE
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 21MB
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics,scheduledtasks
+  health:
+    redis:
+      enabled: true
