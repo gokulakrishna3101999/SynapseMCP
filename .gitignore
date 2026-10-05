@@ -1,0 +1,5 @@
+# folder not needed in the repo
+
+.idea/
+.mvn/
+target/
