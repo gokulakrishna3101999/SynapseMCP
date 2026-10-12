@@ -1,0 +1,81 @@
+spring:
+  application:
+    name: synapse-mcp
+
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+
+  threads:
+    virtual:
+      enabled: true   # Tomcat request threads + @Async/@Scheduled default executors run on virtual threads
+
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/synapsemcp}
+    username: ${DB_USERNAME:synapse_app}
+    password: ${DB_PASSWORD:}
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none   # schema is owned by Flyway
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    # Migrations run as the schema owner; the app connects as a non-owner role so RLS is enforced.
+    user: ${DB_MIGRATION_USERNAME:${DB_USERNAME:synapse_app}}
+    password: ${DB_MIGRATION_PASSWORD:${DB_PASSWORD:}}
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 11MB
+
+  ai:
+    retry:
+      max-attempts: 1   # a failed Gemini call fails the ingestion job; no retries (Tier 1 decision)
+    google:
+      genai:
+        api-key: ${GEMINI_API_KEY:${GOOGLE_API_KEY:}}
+        chat:
+          options:
+            model: gemini-3.5-flash
+        embedding:
+          api-key: ${GEMINI_API_KEY:${GOOGLE_API_KEY:}}
+          text:
+            options:
+              model: gemini-embedding-2
+              dimensions: 768
+    mcp:
+      server:
+        enabled: false   # switched on in Phase 6 (Milestone 6.1)
+
+server:
+  port: 8080
+  tomcat:
+    threads:
+      max: 200
+
+synapse:
+  ingestion:
+    tier1:
+      timeout: PT90S   # one Gemini extraction call; exceeding it fails the job (no retry)
+  storage:
+    s3:
+      bucket: ${S3_BUCKET:aws-rag-bucket-app}
+      region: ${AWS_REGION:us-east-1}
+      access-key: ${AWS_ACCESS_KEY:}   # required; read explicitly, the AWS default provider chain is NOT used
+      secret-key: ${AWS_SECRET_KEY:}   # required
+      endpoint: ${S3_ENDPOINT:}        # blank = real AWS; set only for LocalStack/MinIO (ambient AWS_ENDPOINT_URL is ignored)
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173}
+  security:
+    jwt:
+      secret: ${JWT_SECRET:}            # Base64-encoded, >= 32 bytes (HS256)
+      expiration: PT24H
+      issuer: synapse-mcp
