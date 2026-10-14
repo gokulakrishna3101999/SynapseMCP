@@ -4,7 +4,121 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="adb2c8f2-e9d0-41d3-bbc4-83e31c942030" name="Changes" comment="" />
+    <list default="true" id="adb2c8f2-e9d0-41d3-bbc4-83e31c942030" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/.env.example" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/docs/architecture.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/docs/design.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/docs/instruction.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/docs/local-db-setup.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/docs/memory.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/docs/plan.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/docs/s3-setup.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/SynapseMcpApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/auth/controller/AuthController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/auth/dto/AuthRequests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/auth/dto/AuthResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/auth/entity/Tenant.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/auth/entity/TenantStatus.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/auth/entity/User.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/auth/entity/UserRole.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/auth/repository/TenantRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/auth/repository/UserRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/auth/service/AuthService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/common/entity/AuditLog.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/common/exception/ApiException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/common/exception/GlobalExceptionHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/config/PersistenceConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/config/S3Config.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/config/SecurityConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/config/SpringAiConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/config/StorageProperties.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/config/VirtualThreadConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/document/controller/DocumentController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/document/dto/UploadResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/document/entity/Document.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/document/entity/DocumentStatus.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/document/entity/IngestionTier.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/document/entity/KnowledgeBase.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/document/model/FileCategory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/document/repository/DocumentRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/document/repository/KnowledgeBaseRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/document/service/DocumentService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/document/service/DocumentStorageService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/ingestion/entity/IngestionJob.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/ingestion/entity/JobStage.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/ingestion/entity/JobStatus.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/ingestion/extraction/DocumentExtractionException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/ingestion/extraction/DocumentParserStrategy.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/ingestion/extraction/ExtractionProperties.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/ingestion/extraction/ExtractionRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/ingestion/extraction/ExtractionResult.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/ingestion/extraction/IngestionTierRouter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/ingestion/extraction/JavaParserExtractor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/ingestion/extraction/MultimodalLlmExtractor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/ingestion/extraction/parser/JsoupHtmlDocumentParser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/ingestion/extraction/parser/MarkdownSupport.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/ingestion/extraction/parser/PdfBoxDocumentParser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/ingestion/extraction/parser/PoiExcelDocumentParser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/ingestion/extraction/parser/PoiPptDocumentParser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/ingestion/extraction/parser/PoiWordDocumentParser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/ingestion/extraction/parser/TesseractOcrDocumentParser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/ingestion/extraction/parser/TextDocumentParser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/ingestion/repository/IngestionJobRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/mcp/entity/ApiKey.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/mcp/service/ApiKeyAuthenticator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/mcp/service/ApiKeyHasher.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/rag/entity/Chunk.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/security/AuthenticatedPrincipal.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/security/BearerTokenExtractor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/security/JwtAuthenticationFilter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/security/JwtProperties.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/security/JwtTokenProvider.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/security/McpApiKeyAuthenticationFilter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/security/ProblemAuthenticationEntryPoint.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/security/RlsSupport.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/security/TenantAwareTaskDecorator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/security/TenantContext.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/synapsemcp/security/TenantRlsTransactionManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/application.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/db/migration/V1__init_schema.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/db/migration/V2__rls_audit_and_api_key_auth.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/tessdata/eng.traineddata" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/com/synapsemcp/config/AiRetryPolicyTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/com/synapsemcp/config/GeminiLiveIT.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/com/synapsemcp/document/model/FileCategoryTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/com/synapsemcp/document/service/DocumentServiceTierTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/com/synapsemcp/document/service/DocumentStorageServiceTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/com/synapsemcp/document/service/S3LiveIT.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/com/synapsemcp/ingestion/extraction/IngestionTierRouterTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/com/synapsemcp/ingestion/extraction/JavaParserExtractorTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/com/synapsemcp/ingestion/extraction/MultimodalExtractorDeepLiveIT.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/com/synapsemcp/ingestion/extraction/MultimodalExtractorLimitsLiveIT.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/com/synapsemcp/ingestion/extraction/MultimodalExtractorLiveIT.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/com/synapsemcp/ingestion/extraction/MultimodalLlmExtractorTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/com/synapsemcp/ingestion/extraction/TesseractOcrParserTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/com/synapsemcp/ingestion/extraction/TestDocuments.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/com/synapsemcp/ingestion/extraction/parser/OfficeParsersTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/com/synapsemcp/ingestion/extraction/parser/TextAndHtmlParsersTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/com/synapsemcp/mcp/service/ApiKeyHasherTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/com/synapsemcp/security/JwtTokenProviderTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/com/synapsemcp/security/TenantAwareTaskDecoratorTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/resources/fixtures/sample.doc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/resources/fixtures/sample.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/resources/fixtures/sample.ppt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/resources/fixtures/sample.pptx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/resources/fixtures/sample.xls" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/resources/fixtures/sample.xlsx" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -27,7 +141,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/gokulakrishna3101999/SynapseMCP.git&quot;,
-    &quot;accountId&quot;: &quot;4b7337aa-5f89-463a-ad81-712b9229cd04&quot;
+    &quot;accountId&quot;: &quot;d4984afd-7e38-4abb-aee3-b8c1453082a6&quot;
   }
 }</component>
   <component name="MavenImportPreferences">
@@ -36,6 +150,65 @@
         <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
       </MavenGeneralSettings>
     </option>
+  </component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.00000017450961" />
+      <entry key="S2" value="1.0767637355277013" />
+      <entry key="S5" value="2.185644079502419" />
+      <entry key="S10" value="4.6731483076351275" />
+      <entry key="S30" value="11.607550837324744" />
+      <entry key="S60" value="17.519808766146852" />
+      <entry key="M2" value="23.019999005280848" />
+      <entry key="M5" value="27.851227478055463" />
+      <entry key="M10" value="29.817817172900728" />
+      <entry key="M15" value="30.519994755242475" />
+      <entry key="M30" value="31.24705735951174" />
+      <entry key="H1" value="31.620229899241608" />
+      <entry key="H2" value="31.809282140431648" />
+      <entry key="H4" value="31.904431844645277" />
+      <entry key="D1" value="31.984042827726228" />
+      <entry key="W1" value="31.997719689031058" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="8.367914151496137E-127" />
+      <entry key="MS500" value="6.090119977599809E-26" />
+      <entry key="S2" value="5.604692919819539E-7" />
+      <entry key="S5" value="0.0046569660504671515" />
+      <entry key="S10" value="0.10949075533478864" />
+      <entry key="S30" value="0.9750551779982116" />
+      <entry key="S60" value="1.7056789520745421" />
+      <entry key="M2" value="2.2605319969230964" />
+      <entry key="M5" value="2.6784582833647845" />
+      <entry key="M10" value="2.834594978795036" />
+      <entry key="M15" value="2.888673198342661" />
+      <entry key="M30" value="2.943801293351899" />
+      <entry key="H1" value="2.97176550804372" />
+      <entry key="H2" value="2.985848803911323" />
+      <entry key="H4" value="2.9929158936563933" />
+      <entry key="D1" value="2.99881813213394" />
+      <entry key="W1" value="2.9998311327272758" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="7.725565148744376E-5" />
+      <entry key="MS500" value="0.15051734333439715" />
+      <entry key="S2" value="0.6992140350997293" />
+      <entry key="S5" value="2.0140094616479822" />
+      <entry key="S10" value="4.674838219460524" />
+      <entry key="S30" value="12.508958700832196" />
+      <entry key="S60" value="19.17272912735685" />
+      <entry key="M2" value="25.247844656590807" />
+      <entry key="M5" value="30.51463980707486" />
+      <entry key="M10" value="32.64451248289904" />
+      <entry key="M15" value="33.40331379417738" />
+      <entry key="M30" value="34.18813666812848" />
+      <entry key="H1" value="34.590622987487286" />
+      <entry key="H2" value="34.79444185202604" />
+      <entry key="H4" value="34.89700246831743" />
+      <entry key="D1" value="34.98280331405679" />
+      <entry key="W1" value="34.99754258417127" />
+    </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3,
@@ -46,31 +219,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "develop-stage",
-    "junie.onboarding.icon.badge.shown": "true",
-    "kotlin-language-version-configured": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "to.speed.mode.migration.done": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;Spring Boot.SynapseMcpApplication.executor&quot;: &quot;Run&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;develop-stage&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-30f59d01ecdd-37e91769500f-intellij.indexing.shared.core-IU-261.27258.48" />
-        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-IU-261.27258.48" />
+        <option value="bundled-jdk-30f59d01ecdd-a203e0a19954-intellij.indexing.shared.core-IU-262.10968.63" />
+        <option value="bundled-js-predefined-d6986cc7102b-4abd2a77f808-JavaScript-IU-262.10968.63" />
       </set>
     </attachedChunks>
   </component>
