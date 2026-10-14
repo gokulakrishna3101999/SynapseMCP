@@ -1,0 +1,52 @@
+# plan.md Milestone 8.2: Postgres (with pgvector) + the Spring Boot backend.
+# S3 is real AWS, staged transiently and purged (architecture.md ADR-07) - there is no MinIO service
+# here since the app was never actually wired up against MinIO/LocalStack this session; set S3_ENDPOINT
+# below if you want to point it at one instead of real AWS.
+#
+# Secrets (JWT_SECRET, GEMINI_API_KEY, AWS_ACCESS_KEY, AWS_SECRET_KEY, SYNAPSE_APP_PASSWORD) are read from
+# the environment / a .env file (git-ignored) next to this file - see .env.example. Nothing here has a
+# hardcoded secret or a fallback default for one.
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg17
+    environment:
+      POSTGRES_DB: synapsemcp
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: ${DB_MIGRATION_PASSWORD}
+      SYNAPSE_APP_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./docker/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh:ro
+    # No host port published: the backend reaches this over the compose network by service name, and
+    # this machine's own MacPorts Postgres is already using host port 5432.
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d synapsemcp"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: .
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/synapsemcp
+      DB_USERNAME: synapse_app
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_MIGRATION_USERNAME: admin
+      DB_MIGRATION_PASSWORD: ${DB_MIGRATION_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_KEY: ${AWS_SECRET_KEY}
+      S3_BUCKET: ${S3_BUCKET:-aws-rag-bucket-app}
+      AWS_REGION: ${AWS_REGION:-us-east-1}
+      S3_ENDPOINT: ${S3_ENDPOINT:-}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:5173}
+    ports:
+      - "8080:8080"
+
+volumes:
+  pgdata:
