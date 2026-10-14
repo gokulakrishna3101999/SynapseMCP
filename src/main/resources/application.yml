@@ -84,6 +84,9 @@ synapse:
     timeout: PT2S   # DuckDuckGo Instant Answer API call (replaces plan.md's Tavily client, per user decision)
   chat:
     timeout: PT20S  # one Gemini chat synthesis attempt; AnswerSynthesizer retries up to 3 times on top of this
+  query:
+    correction:
+      timeout: PT5S  # one Gemini spell-correction call; best-effort, falls back to the raw query on failure (no retry)
   cors:
     allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173}
   security:

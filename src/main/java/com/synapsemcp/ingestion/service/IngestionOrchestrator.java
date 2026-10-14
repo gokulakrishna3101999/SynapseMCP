@@ -55,6 +55,11 @@ import org.springframework.stereotype.Service;
  * API. Only if it fails, and only for files up to Tier 1's 2 MiB limit, is the Gemini multimodal fallback
  * (Tier 1) attempted. If that also fails, or the file is too large for it, the job fails with a combined
  * error message naming both failures. See {@link #extract}.
+ * <p>Images under 2 MiB are the one exception to that order (user decision): Tesseract OCR (Tier 2) is
+ * accurate only on clean, mostly-text scans, whereas the Gemini multimodal model (Tier 1) reads both text
+ * and visual content reliably, so for small images it is tried FIRST, with Tier 2 OCR as the fallback on
+ * failure - the reverse of every other category. Images at or over 2 MiB still go through Tier 2 OCR only,
+ * unchanged, since Tier 1 hard-rejects anything over that size. See {@link #extractSmallImage}.
  */
 @Service
 @EnableConfigurationProperties(Tier2ExtractionProperties.class)
@@ -141,10 +146,11 @@ public class IngestionOrchestrator {
     }
 
     /**
-     * Java parser first, always - it is free and handles every category. Only on failure, and only for
-     * files up to the Tier 1 limit, is the Gemini fallback attempted; a file larger than that gets no
-     * fallback and fails with the Java parser's own error. {@code document.ingestionTier} is updated here
-     * to whichever tier actually produced the result (it was only ever a provisional guess at upload time).
+     * Java parser first, always, for every category except small images (see {@link #extractSmallImage})
+     * - it is free and handles every category. Only on failure, and only for files up to the Tier 1 limit,
+     * is the Gemini fallback attempted; a file larger than that gets no fallback and fails with the Java
+     * parser's own error. {@code document.ingestionTier} is updated here to whichever tier actually
+     * produced the result (it was only ever a provisional guess at upload time).
      */
     private ExtractionResult extract(Document document, FileCategory category) throws Exception {
         byte[] content;
@@ -152,6 +158,10 @@ public class IngestionOrchestrator {
             content = in.readAllBytes();
         }
         ExtractionRequest request = new ExtractionRequest(document.getName(), category, document.getContentType(), content);
+
+        if (category == FileCategory.IMAGE && content.length <= MultimodalLlmExtractor.TIER_1_MAX_BYTES) {
+            return extractSmallImage(document, request);
+        }
 
         DocumentExtractionException tier2Failure;
         try {
@@ -175,6 +185,34 @@ public class IngestionOrchestrator {
         } catch (DocumentExtractionException tier1Failure) {
             throw new DocumentExtractionException("Java parser failed: " + tier2Failure.getMessage()
                     + ". LLM fallback also failed: " + tier1Failure.getMessage(), tier1Failure);
+        }
+    }
+
+    /**
+     * Images under 2 MiB: Gemini (Tier 1) is tried first, not Tesseract OCR - the reverse of every other
+     * category/size combination. Tesseract reads clean text reliably but does poorly on stylized text,
+     * low-contrast scans, or images that are mostly a diagram/photo with little or no text; Gemini's
+     * multimodal model handles both text and visual content in one pass. OCR (Tier 2) remains the
+     * fallback if the Gemini call fails or times out, so a transient Gemini error doesn't fail the whole
+     * upload outright (user decision).
+     */
+    private ExtractionResult extractSmallImage(Document document, ExtractionRequest request) throws Exception {
+        DocumentExtractionException tier1Failure;
+        try {
+            ExtractionResult result = tier1Extractor.extract(request); // already bounded by its own timeout
+            document.setIngestionTier(IngestionTier.TIER_1_MULTIMODAL);
+            return result;
+        } catch (DocumentExtractionException ex) {
+            tier1Failure = ex;
+        }
+
+        try {
+            ExtractionResult result = extractTier2WithTimeout(request);
+            document.setIngestionTier(IngestionTier.TIER_2_JAVA_PARSER);
+            return result;
+        } catch (DocumentExtractionException tier2Failure) {
+            throw new DocumentExtractionException("LLM extraction failed: " + tier1Failure.getMessage()
+                    + ". OCR fallback also failed: " + tier2Failure.getMessage(), tier2Failure);
         }
     }
 

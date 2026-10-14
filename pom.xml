@@ -194,6 +194,25 @@
                     </excludes>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <!-- Tess4J/JNA locates the native "tesseract" library by name via jna.library.path, the
+                         JVM's java.library.path, and a handful of OS-default directories - but NOT every
+                         directory a package manager might install it to. On Linux (Docker's apt-get install,
+                         and most CI) it lands in java.library.path's defaults already, so this is a no-op
+                         there. On a developer's Mac it commonly doesn't: Homebrew (Apple Silicon) uses
+                         /opt/homebrew/lib, Homebrew (Intel) and MacPorts use /usr/local/lib and /opt/local/lib
+                         respectively, none of which JNA searches by default - this caused every
+                         Tesseract-dependent test to fail here with "Could not initialize class
+                         net.sourceforge.tess4j.TessAPI" / "Unable to load library 'tesseract'" even though
+                         Tesseract itself was correctly installed (MacPorts, in this case). Listing all of them
+                         covers every common install location at once; JNA silently skips directories that
+                         don't exist on a given machine, so this is harmless everywhere else. -->
+                    <argLine>-Djna.library.path=/opt/homebrew/lib${path.separator}/usr/local/lib${path.separator}/opt/local/lib${path.separator}/usr/lib/x86_64-linux-gnu${path.separator}/usr/lib/aarch64-linux-gnu</argLine>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>
