@@ -11,6 +11,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.synapsemcp.common.ratelimit.RateLimiter;
+import com.synapsemcp.rag.correction.QuerySpellCorrector;
 import com.synapsemcp.rag.dto.ChatResponse;
 import com.synapsemcp.rag.dto.ChatTurn;
 import com.synapsemcp.rag.evaluator.SufficiencyEvaluator;
@@ -27,6 +28,9 @@ import org.springframework.ai.embedding.EmbeddingModel;
 /**
  * The 3-stage routing decision itself (local -> web -> deterministic failure), with every dependency
  * mocked: this is about branch selection, not any one component's internals (those have their own tests).
+ * {@code querySpellCorrector} is stubbed to pass the query through unchanged by default, matching its
+ * real best-effort fallback behavior - see {@code QuerySpellCorrectorTest} for its own unit coverage and
+ * the tests below that exercise an actual correction.
  */
 class RagQueryOrchestratorTest {
 
@@ -35,9 +39,14 @@ class RagQueryOrchestratorTest {
     private final SufficiencyEvaluator sufficiencyEvaluator = mock(SufficiencyEvaluator.class);
     private final WebSearchService webSearchService = mock(WebSearchService.class);
     private final AnswerSynthesizer answerSynthesizer = mock(AnswerSynthesizer.class);
+    private final QuerySpellCorrector querySpellCorrector = mock(QuerySpellCorrector.class);
     private final RagQueryOrchestrator orchestrator = new RagQueryOrchestrator(
             embeddingModel, vectorRetriever, sufficiencyEvaluator, webSearchService, answerSynthesizer,
-            new RateLimiter());
+            new RateLimiter(), querySpellCorrector);
+
+    {
+        when(querySpellCorrector.correct(anyString())).thenAnswer(inv -> inv.getArgument(0));
+    }
 
     private final UUID tenantId = UUID.randomUUID();
     private final float[] queryEmbedding = new float[] {0.1f, 0.2f};
@@ -136,5 +145,41 @@ class RagQueryOrchestratorTest {
 
         // Only the last 2 user turns (MAX_RETRIEVAL_HISTORY_USER_TURNS) feed the embedded retrieval text.
         verify(embeddingModel).embed(eq("turn3\nturn4\nquery"));
+    }
+
+    /**
+     * When correction actually changes the query, the corrected text - not the raw user-typed one - must
+     * drive retrieval, web search, and synthesis alike, and the correction itself surfaces in the response.
+     */
+    @Test
+    void aCorrectedQueryIsUsedForRetrievalAndSynthesisAndSurfacedInTheResponse() {
+        when(querySpellCorrector.correct("wat is teh phoenix budgte")).thenReturn("what is the phoenix budget");
+        List<ChunkMatch> matches = List.of(new ChunkMatch(UUID.randomUUID(), UUID.randomUUID(), "doc.txt",
+                "budget is 42000", 0.91));
+        when(embeddingModel.embed(anyString())).thenReturn(queryEmbedding);
+        when(vectorRetriever.search(tenantId, queryEmbedding)).thenReturn(matches);
+        when(sufficiencyEvaluator.isSufficient(matches)).thenReturn(true);
+        when(answerSynthesizer.synthesizeFromLocal(eq("what is the phoenix budget"), eq(matches), eq(List.of())))
+                .thenReturn("42000.");
+
+        ChatResponse response = orchestrator.answer(tenantId, "wat is teh phoenix budgte");
+
+        assertThat(response.correctedQuery()).isEqualTo("what is the phoenix budget");
+        verify(embeddingModel).embed(eq("what is the phoenix budget"));
+    }
+
+    /** Correction leaving the query unchanged (the common case) must not surface a no-op "correction". */
+    @Test
+    void anUnchangedQueryLeavesCorrectedQueryNullInTheResponse() {
+        List<ChunkMatch> matches = List.of(new ChunkMatch(UUID.randomUUID(), UUID.randomUUID(), "doc.txt",
+                "relevant content", 0.91));
+        when(embeddingModel.embed(anyString())).thenReturn(queryEmbedding);
+        when(vectorRetriever.search(tenantId, queryEmbedding)).thenReturn(matches);
+        when(sufficiencyEvaluator.isSufficient(matches)).thenReturn(true);
+        when(answerSynthesizer.synthesizeFromLocal(any(), any(), any())).thenReturn("x is this.");
+
+        ChatResponse response = orchestrator.answer(tenantId, "what is x?");
+
+        assertThat(response.correctedQuery()).isNull();
     }
 }

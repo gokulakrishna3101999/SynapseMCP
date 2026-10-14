@@ -1,6 +1,7 @@
 package com.synapsemcp.rag.service;
 
 import com.synapsemcp.common.ratelimit.RateLimiter;
+import com.synapsemcp.rag.correction.QuerySpellCorrector;
 import com.synapsemcp.rag.dto.ChatResponse;
 import com.synapsemcp.rag.dto.ChatTurn;
 import com.synapsemcp.rag.evaluator.SufficiencyEvaluator;
@@ -10,6 +11,7 @@ import com.synapsemcp.rag.synthesis.AnswerSynthesizer;
 import com.synapsemcp.rag.websearch.WebSearchResult;
 import com.synapsemcp.rag.websearch.WebSearchService;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,14 @@ import org.springframework.stereotype.Service;
  * someone's work history; (2) the full trimmed history is handed to {@link AnswerSynthesizer} so the
  * final answer can read naturally as a follow-up - the synthesis prompt still grounds facts strictly in
  * the retrieved excerpts, history is for continuity only, never a source of new facts.
+ * <p>Spelling correction (user decision): retrieval here is pure cosine similarity over embeddings, with
+ * no lexical/keyword fallback, so a misspelled query can embed too far from the correct one to clear
+ * {@link SufficiencyEvaluator}'s threshold even when the right chunks exist. {@link QuerySpellCorrector}
+ * runs once per request, before the query is folded into the retrieval embedding text; its output (or the
+ * original query, unchanged, if correction made no change or failed) is then used for retrieval, web
+ * search, and answer synthesis alike, so the whole pipeline reasons about one consistent query. The raw
+ * user-typed query is preserved only to detect whether a correction actually happened, for
+ * {@link ChatResponse#correctedQuery()}.
  */
 @Service
 public class RagQueryOrchestrator {
@@ -43,16 +53,19 @@ public class RagQueryOrchestrator {
     private final WebSearchService webSearchService;
     private final AnswerSynthesizer answerSynthesizer;
     private final RateLimiter rateLimiter;
+    private final QuerySpellCorrector querySpellCorrector;
 
     public RagQueryOrchestrator(EmbeddingModel embeddingModel, VectorRetriever vectorRetriever,
                                  SufficiencyEvaluator sufficiencyEvaluator, WebSearchService webSearchService,
-                                 AnswerSynthesizer answerSynthesizer, RateLimiter rateLimiter) {
+                                 AnswerSynthesizer answerSynthesizer, RateLimiter rateLimiter,
+                                 QuerySpellCorrector querySpellCorrector) {
         this.embeddingModel = embeddingModel;
         this.vectorRetriever = vectorRetriever;
         this.sufficiencyEvaluator = sufficiencyEvaluator;
         this.webSearchService = webSearchService;
         this.answerSynthesizer = answerSynthesizer;
         this.rateLimiter = rateLimiter;
+        this.querySpellCorrector = querySpellCorrector;
     }
 
     public ChatResponse answer(UUID tenantId, String query) {
@@ -63,18 +76,21 @@ public class RagQueryOrchestrator {
         rateLimiter.checkAndConsume(tenantId, "CHAT", RateLimiter.STRICT_LIMIT, RateLimiter.STRICT_WINDOW);
         List<ChatTurn> trimmedHistory = trim(history);
 
-        float[] queryEmbedding = embeddingModel.embed(retrievalQuery(query, trimmedHistory));
+        String correctedQuery = querySpellCorrector.correct(query);
+        String correctionForResponse = Objects.equals(query, correctedQuery) ? null : correctedQuery;
+
+        float[] queryEmbedding = embeddingModel.embed(retrievalQuery(correctedQuery, trimmedHistory));
         List<ChunkMatch> matches = vectorRetriever.search(tenantId, queryEmbedding);
 
         if (sufficiencyEvaluator.isSufficient(matches)) {
-            String answer = answerSynthesizer.synthesizeFromLocal(query, matches, trimmedHistory);
-            return ChatResponse.localKb(answer, matches);
+            String answer = answerSynthesizer.synthesizeFromLocal(correctedQuery, matches, trimmedHistory);
+            return ChatResponse.localKb(answer, matches, correctionForResponse);
         }
 
-        List<WebSearchResult> webResults = webSearchService.search(query, WEB_MAX_RESULTS);
+        List<WebSearchResult> webResults = webSearchService.search(correctedQuery, WEB_MAX_RESULTS);
         if (!webResults.isEmpty()) {
-            String answer = answerSynthesizer.synthesizeFromWeb(query, webResults, trimmedHistory);
-            return ChatResponse.webSearch(answer, webResults);
+            String answer = answerSynthesizer.synthesizeFromWeb(correctedQuery, webResults, trimmedHistory);
+            return ChatResponse.webSearch(answer, webResults, correctionForResponse);
         }
 
         return ChatResponse.none(DETERMINISTIC_FAILURE_MESSAGE);
